@@ -28,6 +28,12 @@
                     <clear-password password="quick123+"/>
                 </credentials>
                 <set-mechanism-realm name="ApplicationRealm"/>
+                <sasl-mechanism-selector selector="DIGEST-MD5"/>
+                <set-mechanism-properties>
+                    <property key="javax.security.sasl.policy.noanonymous" value="false"/>
+                </set-mechanism-properties>
+                <set-host name="127.0.0.1" />
+                <set-port number="8180" />
                 <providers>
                     <use-service-loader/>
                 </providers>
