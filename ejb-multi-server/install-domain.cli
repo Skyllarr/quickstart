@@ -17,9 +17,6 @@
 # Batch the commands
 batch
 
-# Disable the local authentication for applications
-#/host=master/core-service=management/security-realm=ApplicationRealm/authentication=local:remove
-
 /profile=default/subsystem=ejb3:write-attribute(name=default-missing-method-permissions-deny-access, value=false)
 /profile=full/subsystem=ejb3:write-attribute(name=default-missing-method-permissions-deny-access, value=false)
 /profile=ha/subsystem=ejb3:write-attribute(name=default-missing-method-permissions-deny-access, value=false)
@@ -37,11 +34,11 @@ batch
 /socket-binding-group=full-sockets/remote-destination-outbound-socket-binding=remote-ejb-2:add(host=localhost, port=8280)
 
 # Add the outbound connections to the remoting subsystem of the full-profile used by app-main server
-/profile=full/subsystem=elytron/authentication-configuration=auth_config1:add(authentication-name=quickuser1,authorization-name=quickuser1, credential-reference={clear-text=quick123+}, realm="ApplicationRealm",sasl-mechanism-selector="DIGEST-MD5",protocol="http-remoting",mechanism-properties={"javax.security.sasl.policy.noanonymous"=true})
+/profile=full/subsystem=elytron/authentication-configuration=auth_config1:add(authentication-name=quickuser1,authorization-name=quickuser1, credential-reference={clear-text=quick123+}, realm="ApplicationRealm")
 /profile=full/subsystem=elytron/authentication-context=auth_context1:add(match-rules=[{authentication-configuration=auth_config1}])
 /profile=full/subsystem=remoting/remote-outbound-connection=remote-ejb-connection-1:add(outbound-socket-binding-ref=remote-ejb-1, authentication-context=auth_context1)
 
-/profile=full/subsystem=elytron/authentication-configuration=auth_config2:add(authentication-name=quickuser2,authorization-name=quickuser2, credential-reference={clear-text=quick+123}, realm="ApplicationRealm",sasl-mechanism-selector="DIGEST-MD5",protocol="http-remoting",mechanism-properties={"javax.security.sasl.policy.noanonymous"=true})
+/profile=full/subsystem=elytron/authentication-configuration=auth_config2:add(authentication-name=quickuser2,authorization-name=quickuser2, credential-reference={clear-text=quick+123}, realm="ApplicationRealm")
 /profile=full/subsystem=elytron/authentication-context=auth_context2:add(match-rules=[{authentication-configuration=auth_config2}])
 /profile=full/subsystem=remoting/remote-outbound-connection=remote-ejb-connection-2:add(outbound-socket-binding-ref=remote-ejb-2, authentication-context=auth_context2)
 
@@ -218,11 +215,11 @@ batch
 /profile=default-web/subsystem=elytron/mechanism-provider-filtering-sasl-server-factory=elytron:add(sasl-server-factory=global,filters=[{provider-name=WildFlyElytron}])
 /profile=default-web/subsystem=elytron/security-domain=ApplicationDomain:add(default-realm="ApplicationRealm",permission-mapper="default-permission-mapper",realms=[{realm=ApplicationRealm,role-decoder=groups-to-roles}])
 /profile=default-web/subsystem=elytron/sasl-authentication-factory=application-sasl-authentication:add(security-domain="ApplicationDomain", sasl-server-factory="configured", mechanism-configurations=[{mechanism-name=DIGEST-MD5,mechanism-realm-configurations=[{realm-name=ApplicationRealm}]}])
-/profile=default-web/subsystem=elytron/authentication-configuration=auth_config1:add(authentication-name=quickuser1,authorization-name=quickuser1, credential-reference={clear-text=quick123+}, realm="ApplicationRealm",sasl-mechanism-selector="DIGEST-MD5",protocol="http-remoting",mechanism-properties={"javax.security.sasl.policy.noanonymous"=true})
+/profile=default-web/subsystem=elytron/authentication-configuration=auth_config1:add(authentication-name=quickuser1,authorization-name=quickuser1, credential-reference={clear-text=quick123+}, realm="ApplicationRealm")
 /profile=default-web/subsystem=elytron/authentication-context=auth_context1:add(match-rules=[{authentication-configuration=auth_config1}])
 #/profile=default-web/subsystem=remoting/remote-outbound-connection=remote-ejb-connection-1:add(outbound-socket-binding-ref=remote-ejb-1, authentication-context=auth_context1)
 
-/profile=default-web/subsystem=elytron/authentication-configuration=auth_config2:add(authentication-name=quickuser2,authorization-name=quickuser2, credential-reference={clear-text=quick+123}, realm="ApplicationRealm",sasl-mechanism-selector="DIGEST-MD5",protocol="http-remoting",mechanism-properties={"javax.security.sasl.policy.noanonymous"=true})
+/profile=default-web/subsystem=elytron/authentication-configuration=auth_config2:add(authentication-name=quickuser2,authorization-name=quickuser2, credential-reference={clear-text=quick+123}, realm="ApplicationRealm")
 /profile=default-web/subsystem=elytron/authentication-context=auth_context2:add(match-rules=[{authentication-configuration=auth_config2}])
 #/profile=default-web/subsystem=remoting/remote-outbound-connection=remote-ejb-connection-2:add(outbound-socket-binding-ref=remote-ejb-2, authentication-context=auth_context2)
 
